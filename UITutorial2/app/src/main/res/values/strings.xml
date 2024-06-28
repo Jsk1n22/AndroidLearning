@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">UI Tutorial 2</string>
+    <string name="tasks_complete_title">All tasks completed</string>
+    <string name="nice_work">Nice work!</string>
+</resources>
