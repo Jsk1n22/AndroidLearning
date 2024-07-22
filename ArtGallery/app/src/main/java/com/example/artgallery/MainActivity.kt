@@ -49,22 +49,32 @@ fun ArtGallery(
     }
     val imageId = when(artworkNum) {
         1 -> R.drawable.clapping_gorilla
+        2 -> R.drawable.palm_tree_shadow
+        3 -> R.drawable.burning_fire
         else -> R.drawable.stream_to_the_beach
     }
     val imageDescription = when(artworkNum) {
         1 -> "Clapping Gorilla"
+        2 -> "Shadow of a palm tree"
+        3 -> "Large Fire"
         else -> "Stream to the beach"
     }
     val title = when(artworkNum) {
         1 -> "The happy gorilla"
+        2 -> "Under the palms"
+        3 -> "Flames reaching high"
         else -> "Beach stream by dusk"
     }
     val artist = when(artworkNum) {
         1 -> "JK"
+        2 -> "JK"
+        3 -> "JK"
         else -> "JK"
     }
     val year = when(artworkNum) {
         1 -> 2017
+        2 -> 2018
+        3 -> 2018
         else -> 2018
     }
     Column(
@@ -112,7 +122,7 @@ fun ArtworkDescription(
         modifier = modifier
     )
     Text(
-        text = "$artist($year)",
+        text = "$artist ($year)",
         modifier = modifier
     )
 }
