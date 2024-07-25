@@ -5,7 +5,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -24,8 +23,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +32,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -73,30 +69,35 @@ fun ArtGallery(
         1 -> R.drawable.clapping_gorilla
         2 -> R.drawable.palm_tree_shadow
         3 -> R.drawable.burning_fire
+        4 -> R.drawable.stream_to_the_beach
         else -> R.drawable.stream_to_the_beach
     }
     val imageDescription = when(artworkNum) {
         1 -> "Clapping Gorilla"
         2 -> "Shadow of a palm tree"
         3 -> "Large Fire"
+        4 -> "Stream to the beach"
         else -> "Stream to the beach"
     }
     val title = when(artworkNum) {
         1 -> "The happy gorilla"
         2 -> "Under the palms"
         3 -> "Flames reaching high"
+        4 -> "Beach stream by dusk"
         else -> "Beach stream by dusk"
     }
     val artist = when(artworkNum) {
         1 -> "JK"
         2 -> "JK"
         3 -> "JK"
+        4 -> "JK"
         else -> "JK"
     }
     val year = when(artworkNum) {
         1 -> 2017
         2 -> 2018
         3 -> 2018
+        4 -> 2018
         else -> 2018
     }
     Column(
@@ -121,14 +122,21 @@ fun ArtGallery(
         )
         Spacer(modifier = Modifier.height(20.dp))
         DisplayController(
-            onNextChange = {artworkNum++},
-            onPrevChange = {artworkNum--},
-            modifier = modifier
+            onNextChange = {
+                if (artworkNum==4){
+                    artworkNum = 1
+                } else {
+                    artworkNum++
+                }},
+            onPrevChange = {if (artworkNum==1){
+                artworkNum = 4
+            } else {
+                artworkNum--
+            }}
         )
     }
 }
 
-//TODO: Restrict Image Size
 @Composable
 fun ArtworkWall(
     @DrawableRes image: Int,
@@ -136,7 +144,7 @@ fun ArtworkWall(
 ) {
     Box(
         modifier = Modifier
-            .border(1.dp, Color.LightGray)
+            .border(1.dp, Color.LightGray, shape = RoundedCornerShape(8.dp))
             .shadow(
                 elevation = 10.dp,
                 shape = RoundedCornerShape(8.dp)
@@ -185,8 +193,7 @@ fun ArtworkDescription(
 @Composable
 fun DisplayController(
     onNextChange: () -> Unit,
-    onPrevChange: () -> Unit,
-    modifier: Modifier
+    onPrevChange: () -> Unit
 ) {
     Row {
         Button(
