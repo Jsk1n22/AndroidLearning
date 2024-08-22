@@ -4,13 +4,34 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
+import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.courses.data.DataSource
+import com.example.courses.model.Topic
 import com.example.courses.ui.theme.CoursesTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,31 +40,106 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CoursesTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                CoursesApp()
             }
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
+fun TopicCard(
+    topic: Topic,
+    modifier: Modifier = Modifier
+) {
+    Card (
         modifier = modifier
-    )
+    ) {
+        Row {
+            Image(
+                painterResource(id = topic.imageRef),
+                contentDescription = topic.name.toString(),
+                modifier = Modifier.size(68.dp),
+                contentScale = ContentScale.Crop
+            )
+
+            Column (
+            ) {
+                Text (
+                    text = stringResource(id = topic.name),
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
+                )
+                Text(
+                    text = topic.count.toString(),
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun CoursesApp() {
+    val layoutDirection = LocalLayoutDirection.current
+    val topicList = DataSource.topics
+    val firstHalf = topicList.take(topicList.size/2)
+    val secondHalf = topicList.drop(topicList.size/2)
+    Surface(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .padding(
+                start = WindowInsets.safeDrawing
+                    .asPaddingValues()
+                    .calculateStartPadding(layoutDirection),
+                end = WindowInsets.safeDrawing
+                    .asPaddingValues()
+                    .calculateEndPadding(layoutDirection),
+            ),
+    ) {
+        Row {
+            CoursesList(firstHalf)
+            CoursesList(secondHalf)
+        }
+    }
+}
+
+@Composable
+fun CoursesList (
+    topicList: List<Topic>,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(topicList) { a ->
+            TopicCard(
+                topic = a,
+                modifier = Modifier.padding(8.dp)
+            )
+        }
+    }
+}
+
+@Preview(
+    showBackground = true,
+    showSystemUi = false)
+@Composable
+fun TopicCardPreview() {
+    CoursesTheme {
+        TopicCard(
+            topic = Topic(R.string.architecture, 58, R.drawable.architecture)
+        )
+    }
 }
 
 @Preview(
     showBackground = true,
     showSystemUi = true)
 @Composable
-fun GreetingPreview() {
+fun CoursesPreview() {
     CoursesTheme {
-        Greeting("Android")
+        CoursesApp()
     }
 }
