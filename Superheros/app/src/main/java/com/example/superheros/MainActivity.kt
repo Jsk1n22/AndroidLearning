@@ -20,8 +20,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             SuperherosTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    SuperheroList(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -31,17 +30,20 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun SuperheroList(modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
+        text = "Hello!",
         modifier = modifier
     )
 }
 
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    showSystemUi = true
+)
 @Composable
-fun GreetingPreview() {
+fun SuperheroListPreview() {
     SuperherosTheme {
-        Greeting("Android")
+        SuperheroList()
     }
 }
