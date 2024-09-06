@@ -1,0 +1,13 @@
+Getting started on an app
+1. Create Empty Project
+2. Remove HelloAndroid Template
+3. Import any Images needed
+4. Import strings
+5. Add resource directory for fonts & add fonts there
+6. Add dimens file
+5. Configure app theming
+- Shapes, Fonts, Colours, Theme (+ Dark theming)
+6. Add Model and Data packages as appropriate
+7. Create model classes
+8. Populate with data from data object
+10. Make the app
