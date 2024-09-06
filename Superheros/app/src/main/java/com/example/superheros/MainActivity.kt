@@ -11,21 +11,22 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -98,42 +99,31 @@ private fun HeroListItem(
     hero: Hero,
     modifier: Modifier = Modifier
 ) {
-    ElevatedCard(
+    Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
         ),
         modifier = modifier
-            .fillMaxWidth()
     ) {
         Row(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(16.dp)
-                .height(72.dp)
+                .sizeIn(minHeight = 72.dp)
         ) {
-            HeroInformation(hero = hero)
-            Spacer(modifier = Modifier
-                .weight(1f)
-                .size(16.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(hero.nameRes),
+                    style = MaterialTheme.typography.displaySmall
+                )
+                Text(
+                    text = stringResource(hero.descriptionRes),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+            Spacer(modifier = Modifier.size(16.dp))
             HeroPicture(hero = hero)
         }
-    }
-}
-
-@Composable
-private fun HeroInformation(
-    hero: Hero
-) {
-    Column (
-    ) {
-        Text(
-            text = stringResource(id = hero.nameRes),
-            style = Typography.displaySmall
-        )
-
-        Text(
-            text = stringResource(id = hero.descriptionRes),
-            style = Typography.bodyLarge
-        )
     }
 }
 
@@ -149,6 +139,7 @@ private fun HeroPicture(
         Image(
             painter = painterResource(id = hero.imageRes),
             contentDescription = "Picture of ${stringResource(id = hero.nameRes)}",
+            alignment = Alignment.TopCenter,
             contentScale = ContentScale.FillWidth
         )
     }
